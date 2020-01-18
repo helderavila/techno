@@ -11,6 +11,30 @@
 <body>
 
   <div id="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <img class="logo" src="./assets/techno.svg" alt="Logo">
+      <div class="carrinho-menu">{{carrinhoTotal | numeroPreco}} | {{carrinho.length}}</div>
+      <ul>
+        <li v-for="item, index in carrinho">
+          <p>{{item.nome}}</p>
+          <button @click="removerItem(index)">X</button>
+        </li>
+      </ul>
+    </header>
+
+    <!-- PRODUTOS -->
+    <section class="produtos">
+        <div v-for="item in produtos" @click="abrirModal(item.id)" :key="item.id" class="produto">
+          <img :src="item.img" :alt="item.nome" class="produto-img">
+          <div class="produto-info">
+            <span class="produto-preco">{{item.preco | numeroPreco}}</span>
+            <h2 class="produto-titulo">{{item.nome}}</h2>
+          </div>
+        </div>
+    </section>
+
     <!-- MODAL -->
     <section class="modal" v-if="produto" @click="fecharModal">
       <div class="modal-container">
@@ -22,7 +46,8 @@
           <span class="modal-preco">{{produto.preco | numeroPreco}}</span>
           <h2 class="modal-titulo">{{produto.nome}}</h2>
           <p>{{produto.descricao}}</p>
-          <button class="modal-btn">Adicionar Item</button>
+          <button v-if="produto.estoque > 0" @click="adicionarItem" class="modal-btn">Adicionar Item</button>
+          <button v-else @click="adicionarItem" class="modal-btn esgotado" disabled>Produto Esgotado</button>
         </div>
         <div class="avaliacoes">
           <h2 class="avaliacoes-subtitulo">Avaliações</h2>
@@ -34,17 +59,6 @@
           </ul>
         </div>
       </div>
-    </section>
-
-    <!-- PRODUTOS -->
-    <section class="produtos">
-        <div v-for="item in produtos" @click="abrirModal(item.id)" :key="item.id" class="produto">
-          <img :src="item.img" :alt="item.nome" class="produto-img">
-          <div class="produto-info">
-            <span class="produto-preco">{{item.preco | numeroPreco}}</span>
-            <h2 class="produto-titulo">{{item.nome}}</h2>
-          </div>
-        </div>
     </section>
   </div>
 
